@@ -1,0 +1,126 @@
+﻿@page "/"
+@inject HttpClient Http
+@inject IJSRuntime JS
+
+<div class="chat-container">
+    <div class="chat-input">
+        <input type="text" @bind="UserInput" @onkeypress="HandleKeyPress" placeholder="Type your message..." />
+        <button @onclick="SendMessage" class="send-btn">ask</button>
+    </div>
+    <div class="chat-messages">
+        @foreach (var message in Messages)
+        {
+            <div class="@(message.IsUser ? "user-message" : "bot-message")">
+                <div class="message-text">
+                    @message.Text
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
+
+
+
+<style>
+    /* Ensure body and html take full height */
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
+
+    /* Chat container setup */
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* Allow the chat input section to always stay at the bottom */
+        height: 100vh; /* Take up full height of the viewport */
+        max-width: 100%;
+        margin: 0 auto;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        overflow: hidden;
+    }
+
+    /* Message container */
+    .chat-messages {
+        overflow-y: auto;
+        flex-grow: 1;
+        padding-right: 10px;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+    }
+
+    .message {
+        padding: 12px;
+        margin: 5px 0;
+        border-radius: 20px;
+        max-width: 70%;
+        word-wrap: break-word;
+        line-height: 1.4;
+        white-space: pre-wrap; /* Ensures that line breaks are preserved */
+    }
+
+    /* User messages styling */
+    .user-message {
+        background-color: #009688;
+        color: white;
+        align-self: flex-end;
+        border-bottom-right-radius: 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* AI messages styling */
+    .bot-message {
+        background-color: #f1f1f1;
+        color: #333;
+        align-self: flex-start;
+        border-bottom-left-radius: 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Chat input section */
+    .chat-input {
+        display: flex;
+        margin-top: 10px;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+        .chat-input input {
+            width: 80%;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+            .chat-input input:focus {
+                border-color: #009688;
+                outline: none;
+            }
+
+        .chat-input button {
+            width: 15%;
+            padding: 10px;
+            background-color: #009688;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            .chat-input button:hover {
+                background-color: #00796b;
+            }
+
+    .message {
+        animation: fadeIn 0.3s ease-out;
+    }
+</style>
